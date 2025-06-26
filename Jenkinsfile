@@ -37,11 +37,6 @@ pipeline {
                 echo 'Exécution des tests...'
                 bat 'npm test'
             }
-            post {
-                always {
-                    publishTestResults testResultsPattern: '**/test-results.xml'
-                }
-            }
         }
 
         stage('Lint') {
