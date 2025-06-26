@@ -48,23 +48,6 @@ pipeline {
             }
         }
 
-        // stage('Tag Repository') {
-        //     steps {
-        //         echo 'Tag du repository avec la version du build...'
-        //         script {
-        //             withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GITHUB_USER', passwordVariable: 'GITHUB_TOKEN')]) {
-        //                 bat """
-        //                     git config user.email "lbdtristan@gmail.com"
-        //                     git config user.name "TristanLBD"
-        //                     git tag -a "v${DOCKER_TAG}" -m "Build ${DOCKER_TAG}"
-        //                     git remote set-url origin https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/projet.git
-        //                     git push origin "v${DOCKER_TAG}"
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
-
         stage('Push to GitHub Container Registry') {
             steps {
                 echo 'Déploiement de l\'image Docker sur GitHub Container Registry...'
