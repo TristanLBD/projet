@@ -69,7 +69,7 @@ pipeline {
             steps {
                 echo 'Déploiement de l\'image Docker sur GitHub Container Registry...'
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GITHUB_USER', passwordVariable: 'GITHUB_TOKEN')]) {
+                    withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GITHUB_USER', passwordVariable: 'GITHUB_TOKEN')]) {
                         bat """
                             echo ${GITHUB_TOKEN} | docker login ${GITHUB_PACKAGE} -u ${GITHUB_USER} --password-stdin
                             docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${GITHUB_PACKAGE}/${GITHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG}
