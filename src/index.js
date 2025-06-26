@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 
 // Fonction simple pour les tests
 function add(a, b) {
@@ -14,16 +14,16 @@ function multiply(a, b) {
 function createApp() {
     const app = express();
 
-    app.get("/", (req, res) => {
+    app.get('/', (req, res) => {
         res.json({
-            message: "Bienvenue dans l'application CI/CD!",
-            version: "1.0.0",
+            message: 'Bienvenue dans l\'application CI/CD!',
+            version: '1.0.0',
             timestamp: new Date().toISOString(),
         });
     });
 
-    app.get("/health", (req, res) => {
-        res.json({ status: "OK" });
+    app.get('/health', (req, res) => {
+        res.json({ status: 'OK' });
     });
 
     return app;

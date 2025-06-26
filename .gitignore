@@ -150,3 +150,6 @@ Thumbs.db
 
 # Docker
 .dockerignore
+
+
+*.log
