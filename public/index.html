@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Calculatrice CI/CD</title>
+        <style>
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                margin: 0;
+                padding: 20px;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .container {
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                padding: 40px;
+                max-width: 500px;
+                width: 100%;
+            }
+
+            h1 {
+                text-align: center;
+                color: #333;
+                margin-bottom: 30px;
+                font-size: 2.5em;
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 8px;
+                color: #555;
+                font-weight: 600;
+            }
+
+            input,
+            select {
+                width: 100%;
+                padding: 12px;
+                border: 2px solid #e1e5e9;
+                border-radius: 10px;
+                font-size: 16px;
+                transition: border-color 0.3s ease;
+                box-sizing: border-box;
+            }
+
+            input:focus,
+            select:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+            button {
+                width: 100%;
+                padding: 15px;
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 18px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            }
+
+            button:active {
+                transform: translateY(0);
+            }
+
+            .result {
+                margin-top: 30px;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 10px;
+                text-align: center;
+                border-left: 4px solid #667eea;
+            }
+
+            .result h3 {
+                margin: 0 0 10px 0;
+                color: #333;
+            }
+
+            .result-value {
+                font-size: 2em;
+                font-weight: bold;
+                color: #667eea;
+            }
+
+            .error {
+                background: #fee;
+                border-left-color: #e74c3c;
+                color: #c0392b;
+            }
+
+            .loading {
+                opacity: 0.7;
+                pointer-events: none;
+            }
+
+            @media (max-width: 600px) {
+                .container {
+                    margin: 10px;
+                    padding: 20px;
+                }
+
+                h1 {
+                    font-size: 2em;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🧮 Calculatrice CI/CD</h1>
+
+            <form id="calc-form">
+                <div class="form-group">
+                    <label for="a">Premier nombre :</label>
+                    <input type="number" id="a" name="a" required step="any" />
+                </div>
+
+                <div class="form-group">
+                    <label for="b">Deuxième nombre :</label>
+                    <input type="number" id="b" name="b" required step="any" />
+                </div>
+
+                <div class="form-group">
+                    <label for="op">Opération :</label>
+                    <select id="op" name="op" required>
+                        <option value="add">Addition (+)</option>
+                        <option value="multiply">Multiplication (×)</option>
+                    </select>
+                </div>
+
+                <button type="submit">Calculer</button>
+            </form>
+
+            <div id="result" class="result" style="display: none">
+                <h3>Résultat :</h3>
+                <div id="result-value" class="result-value"></div>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById("calc-form").addEventListener("submit", async function (e) {
+                e.preventDefault();
+
+                const form = e.target;
+                const resultDiv = document.getElementById("result");
+                const resultValue = document.getElementById("result-value");
+                const button = form.querySelector("button");
+
+                // Récupérer les valeurs
+                const a = parseFloat(document.getElementById("a").value);
+                const b = parseFloat(document.getElementById("b").value);
+                const op = document.getElementById("op").value;
+
+                // Afficher le loading
+                button.textContent = "Calcul en cours...";
+                button.classList.add("loading");
+                resultDiv.style.display = "none";
+
+                try {
+                    // Appel API
+                    const response = await fetch("/api/calc", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ a, b, op }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Erreur HTTP: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    // Afficher le résultat
+                    resultValue.textContent = data.result;
+                    resultDiv.className = "result";
+                    resultDiv.style.display = "block";
+                } catch (error) {
+                    console.error("Erreur:", error);
+                    resultValue.textContent = "Erreur de calcul";
+                    resultDiv.className = "result error";
+                    resultDiv.style.display = "block";
+                } finally {
+                    // Restaurer le bouton
+                    button.textContent = "Calculer";
+                    button.classList.remove("loading");
+                }
+            });
+
+            // Animation d'entrée
+            document.addEventListener("DOMContentLoaded", function () {
+                const container = document.querySelector(".container");
+                container.style.opacity = "0";
+                container.style.transform = "translateY(20px)";
+
+                setTimeout(() => {
+                    container.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+                    container.style.opacity = "1";
+                    container.style.transform = "translateY(0)";
+                }, 100);
+            });
+        </script>
+    </body>
+</html>
