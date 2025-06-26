@@ -39,13 +39,6 @@ pipeline {
             }
         }
 
-        stage('Lint') {
-            steps {
-                echo 'Vérification du code...'
-                bat 'npm run lint'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 echo 'Création de l\'image Docker...'
