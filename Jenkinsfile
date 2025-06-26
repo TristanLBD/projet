@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE = 'simple-js-project'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
         GITHUB_PACKAGE = 'ghcr.io'
-        GITHUB_USERNAME = 'lbdtr'
+        GITHUB_USERNAME = 'tristanlbd'
     }
 
     stages {
