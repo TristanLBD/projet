@@ -1,0 +1,10 @@
+TP de CI/CD
+Utilisez un projet de votre choix
+assurez vous que le projets ai des test, sinon ajoutez au moins un test auto
+Créer une pipeline sur jenkins qui
+telecharge le repo
+compile le projet
+execute les test
+créer une image docker avec le projet
+tag le repo avec la version du build
+deploy l'image docker sur un package dans votre compte github
