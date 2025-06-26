@@ -19,23 +19,23 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installation des dépendances...'
-                sh 'node --version'
-                sh 'npm --version'
-                sh 'npm install --verbose'
+                bat 'node --version'
+                bat 'npm --version'
+                bat 'npm install --verbose'
             }
         }
 
         stage('Build') {
             steps {
                 echo 'Compilation du projet...'
-                sh 'npm run build'
+                bat 'npm run build'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Exécution des tests...'
-                sh 'npm test'
+                bat 'npm test'
             }
             post {
                 always {
@@ -47,7 +47,7 @@ pipeline {
         stage('Lint') {
             steps {
                 echo 'Vérification du code...'
-                sh 'npm run lint'
+                bat 'npm run lint'
             }
         }
 
@@ -64,7 +64,7 @@ pipeline {
             steps {
                 echo 'Tag du repository avec la version du build...'
                 script {
-                    sh """
+                    bat """
                         git config user.email "jenkins@example.com"
                         git config user.name "Jenkins"
                         git tag -a "v${DOCKER_TAG}" -m "Build ${DOCKER_TAG}"
@@ -79,7 +79,7 @@ pipeline {
                 echo 'Déploiement de l\'image Docker sur GitHub Container Registry...'
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GITHUB_USER', passwordVariable: 'GITHUB_TOKEN')]) {
-                        sh """
+                        bat """
                             echo ${GITHUB_TOKEN} | docker login ${GITHUB_PACKAGE} -u ${GITHUB_USER} --password-stdin
                             docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${GITHUB_PACKAGE}/${GITHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG}
                             docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${GITHUB_PACKAGE}/${GITHUB_USERNAME}/${DOCKER_IMAGE}:latest
@@ -95,7 +95,7 @@ pipeline {
     post {
         always {
             echo 'Nettoyage...'
-            sh 'docker system prune -f'
+            bat 'docker system prune -f'
         }
         success {
             echo 'Pipeline terminée avec succès!'
