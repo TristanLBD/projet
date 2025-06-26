@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE = 'simple-js-project'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
         GITHUB_PACKAGE = 'ghcr.io'
-        GITHUB_USERNAME = 'your-username'
+        GITHUB_USERNAME = 'LBDTristan'
     }
 
     stages {
@@ -19,7 +19,9 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installation des dépendances...'
-                sh 'npm install'
+                sh 'node --version'
+                sh 'npm --version'
+                sh 'npm install --verbose'
             }
         }
 
