@@ -15,7 +15,7 @@ describe("Fonctions mathématiques", () => {
 });
 
 describe("Tests d'intégration", () => {
-    test("add et multiply devraient fonctionner ensemble", () => {
+    test("add et multiply devraient fonctionnerrr ensemble", () => {
         const result1: number = add(2, 3);
         const result2: number = multiply(result1, 2);
         expect(result2).toBe(10);
