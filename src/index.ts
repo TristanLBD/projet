@@ -56,7 +56,7 @@ if (require.main === module) {
     const PORT: number = parseInt(process.env.PORT || "3000", 10);
 
     app.listen(PORT, () => {
-        console.log(`Serveur démarré sur le port ${PORT}`);
+        console.log(`Serveurr démarré sur le port ${PORT}`);
     });
 }
 
